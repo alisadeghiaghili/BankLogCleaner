@@ -23,13 +23,13 @@ for (folder in folders){
     path <- file.path(logsPath, folder)
     data <- loadTextFile(file, pathPart = path)
     
-    data[1088:nrow(data), ]
+    data[1159:nrow(data), ]
     
     
-      
-    data1 <- data[1:1088, ]
+    problemRow <-  1158 
+    data1 <- data[1:problemRow, ]
     tail(data1)
-    data2 <- data[1089:nrow(data), ]  
+    data2 <- data[(problemRow + 1):nrow(data), ]  
       
     data1 <- data1 %>% 
       omitEmptyColumnsWithHeader()
@@ -51,7 +51,7 @@ for (folder in folders){
       enrichData(folder = folder, file = file) %>% 
       resolveProblematiqueCols()
     
-    colnames(data1) <- tableColNames[-3]
+    colnames(data1) <- c("BankName", "AccountNumber", "Amount", "BlockCode", "Date", "TransactionTime", "ReferenceCode", "Status", "FileName", "Type")
     data1 <- data1 %>% 
       mutate(ShebaNumber = as.character(NA)) %>% 
       select("BankName", "AccountNumber", "ShebaNumber", everything())
@@ -76,11 +76,12 @@ for (folder in folders){
       enrichData(folder = folder, file = file) %>% 
       resolveProblematiqueCols()
     
-    colnames(data2) <- tableColNames
+    colnames(data2) <- c("BankName", "AccountNumber", "ShebaNumber", "Amount", "BlockCode", "Date", "TransactionTime", "ReferenceCode", "Status", "FileName", "Type")
     
     data <- rbind(data1, data2)
     
-    
+    data <- setFinalColNames(data = data, file = file) %>% 
+      removeStars()
     
     dataType <- data$Type[1]
     if (dataType == "blockerror") {
@@ -131,3 +132,6 @@ for (folder in folders){
     
     saveRDS(data, file = file.path("rds", paste0(counter, ".rds")))
     counter <- counter + 1
+    
+  }
+}

@@ -9,13 +9,13 @@ source("initials.R")
 logsPath <- "D:\\vazirian logs\\Blocking Logs"
 folders <- dir(logsPath)
 
-for (folder in folders[15:length(folders)]){
+for (folder in folders){
   path <- file.path(logsPath, folder)
   print(path)
   files <- extractFileNames(path)
   filter <- extractWantedFiles(files)
 
-  for (file in files[filter]) {
+  for (file in files) {
     print(file)
     data <- loadTextFile(file, pathPart = path) %>% 
       omitEmptyColumnsWithHeader()
@@ -37,47 +37,48 @@ for (folder in folders[15:length(folders)]){
       enrichData(folder = folder, file = file) %>% 
       resolveProblematiqueCols()
     
-    data <- setFinalColNames(data = data, file = file)
+    data <- setFinalColNames(data = data, file = file) %>% 
+      removeStars(file = file)
     
     dataType <- data$Type[1]
-    if (dataType == "blockerror") {
+    if (dataType == "blockerror" | dataType == "blockerrors") {
       if(hadBlockError == 0){
         blockerror <- data
         hadBlockError <- 1
       } else {
         blockerror <- bind_rows(blockerror, data)
       }
-    } else if(dataType == "transferblockerrors") {
+    } else if(dataType == "transferblockerror" | dataType == "transferblockerrors") {
       if(hadTransferBlockErrors == 0){
         transferblockerrors <- data
         hadTransferBlockErrors <- 1
       } else {
         transferblockerrors <- bind_rows(transferblockerrors, data)
       }
-    } else if(dataType == "unblock") {
+    } else if(dataType == "unblock" | dataType == "unblocks") {
       if(hadUnBlock == 0){
         unblock <- data
         hadUnBlock <- 1
       } else {
         unblock <- bind_rows(unblock, data)
       }
-    } else if(dataType == "transferblock") {
+    } else if(dataType == "transferblock" | dataType == "transferblocks") {
       if(hadTransferBlock == 0){
         transferblock <- data
         hadTransferBlock <- 1
       } else {
         transferblock <- bind_rows(transferblock, data)
       }
-    } else if(dataType == "unblockerrors") {
+    } else if(dataType == "unblockerror" | dataType == "unblockerrors") {
       if(hadUnBlockErrors == 0){
         unblockerrors <- data
         hadUnBlockErrors <- 1
       } else {
         unblockerrors <- bind_rows(unblockerrors, data)
       }
-    } else if(dataType == "block") {
+    } else if(dataType == "block" | dataType == "blocks") {
       if(hadBlock == 0){
-        block <- data
+        block <- datafo
         hadBlock <- 1
       } else {
         block <- bind_rows(block, data)
