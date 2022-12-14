@@ -1,3 +1,4 @@
+Sys.setlocale(category = "LC_ALL")
 setwd("D:\\BankLogCleaner")
 
 # options(message = TRUE)
@@ -117,7 +118,7 @@ for (file in files[filter]) {
 }
 
 enrichUnResolved(unResolved = result$unResolved) %>%
-  write_tsv(file = file.path(logsPath, "test.txt"), col_names = F)
+  write_tsv(file = file.path(logsPath, "test.txt"), col_names = F, append = T)
 
 # types <- c("block", "blockerror", "unblock", "unblockerrors", "transferblock", "transferblockerrors")
 Connection <- createConnection(dsn = "SadeghiTest")

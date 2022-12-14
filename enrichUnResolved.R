@@ -1,4 +1,5 @@
 enrichUnResolved <- function(unResolved) {
+  Sys.setlocale(category = "LC_ALL", locale = "Persian")
   unResolved %>% 
     mutate(BankName = ifelse(is.na(BankName), "بانک:", paste0("بانک:", BankName)),
            AccountNumber = ifelse(is.na(AccountNumber), "حساب:", paste0("حساب:", AccountNumber)),
