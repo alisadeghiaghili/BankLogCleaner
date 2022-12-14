@@ -1,14 +1,14 @@
 enrichUnResolved <- function(unResolved) {
   unResolved %>% 
-    mutate(BankName = ifelse(is.na(BankName), "بانک:", str_c("بانک:", BankName)),
-           AccountNumber = ifelse(is.na(AccountNumber), "حساب:", str_c("حساب:", AccountNumber)),
-           ShebaNumber = ifelse(is.na(ShebaNumber), "شبا:", str_c("شبا:", ShebaNumber)),
-           Amount = ifelse(is.na(Amount), "مبلغ:", str_c("مبلغ:", Amount)),
-           BlockCode = ifelse(is.na(BlockCode), "کد مسدودی:", str_c("کد مسدودی:", BlockCode)),
-           Date = ifelse(is.na(Date), "تاریخ:", str_c("تاریخ:", Date)),
-           TransactionTime = ifelse(is.na(TransactionTime), "زمان تراکنش:", str_c("زمان تراکنش:", TransactionTime)),
-           ReferenceCode = ifelse(is.na(ReferenceCode), "کد پیگیری:", str_c("کد پیگیری:", ReferenceCode)),
-           Status = ifelse(is.na(Status), "وضعیت:", str_c("وضعیت:", Status)),
+    mutate(BankName = ifelse(is.na(BankName), "بانک:", paste0("بانک:", BankName)),
+           AccountNumber = ifelse(is.na(AccountNumber), "حساب:", paste0("حساب:", AccountNumber)),
+           ShebaNumber = ifelse(is.na(ShebaNumber), "شبا:", paste0("شبا:", ShebaNumber)),
+           Amount = ifelse(is.na(Amount), "مبلغ:", paste0("مبلغ:", Amount)),
+           BlockCode = ifelse(is.na(BlockCode), "کد مسدودی:", paste0("کد مسدودی:", BlockCode)),
+           Date = ifelse(is.na(Date), "تاریخ:", paste0("تاریخ:", Date)),
+           TransactionTime = ifelse(is.na(TransactionTime), "زمان تراکنش:", paste0("زمان تراکنش:", TransactionTime)),
+           ReferenceCode = ifelse(is.na(ReferenceCode), "کد پیگیری:", paste0("کد پیگیری:", ReferenceCode)),
+           Status = ifelse(is.na(Status), "وضعیت:", paste0("وضعیت:", Status)),
            FileName = NULL, 
            Type = NULL,
            EndedUpIn = NULL

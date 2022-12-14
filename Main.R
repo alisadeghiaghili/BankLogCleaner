@@ -116,7 +116,7 @@ for (file in files[filter]) {
   file.move(files = file.path(logsPath, Sys.Date(), file))
 }
 
-enrichUnResolved(unResolved = result$unResolved) %>% 
+enrichUnResolved(unResolved = result$unResolved) %>%
   write_tsv(file = file.path(logsPath, "test.txt"), col_names = F)
 
 # types <- c("block", "blockerror", "unblock", "unblockerrors", "transferblock", "transferblockerrors")
