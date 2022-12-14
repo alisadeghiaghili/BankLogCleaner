@@ -7,17 +7,23 @@ source("loadFuncs.R")
 source("initials.R")
 
 logsPath <- "D:\\vazirian logs\\Blocking Logs"
-folders <- dir(logsPath)
+# folders <- dir(logsPath)
 
-for (folder in folders){
-  path <- file.path(logsPath, folder)
-  print(path)
-  files <- extractFileNames(path)
+# for (folder in folders){
+  # path <- file.path(logsPath, folder)
+  # print(path)
+  # files <- extractFileNames(path)
+  files <- dir(path = logsPath, pattern = "\\.txt")
   filter <- extractWantedFiles(files)
 
-  for (file in files) {
-    print(file)
-    data <- loadTextFile(file, pathPart = path) %>% 
+  for (file in files[filter]) {
+    # print(file)
+    # data <- loadTextFile(file, pathPart = path) %>% 
+    #   omitEmptyColumnsWithHeader()
+    # data <- loadTextFile(file, pathPart = path) %>%
+    #   omitEmptyColumnsWithHeader()
+    
+    data <- loadTextFile(file, pathPart = logsPath) %>%
       omitEmptyColumnsWithHeader()
     
     if(nrow(data) == 0) {
@@ -89,7 +95,7 @@ for (folder in folders){
     saveRDS(data, file = file.path("rds", paste0(counter, ".rds")))
     counter <- counter + 1
   }
-}
+# }
 
 
 
@@ -103,6 +109,12 @@ saveRDS(transferblockerrors, file = file.path("finalRDS", paste0("transferblocke
 block <- createEndedUpInCol(block)
 result <- createFinalizedBlock(block = block, transferblock = transferblock, unblock = unblock)
 saveRDS(result$finalBlock, file = file.path("finalRDS", paste0("finalBlock.rds")))
+
+dir.create(path = file.path(logsPath, Sys.Date()))
+
+for (file in files[filter]) {
+  file.move(files = file.path(logsPath, Sys.Date(), file))
+}
 
 enrichUnResolved(unResolved = result$unResolved) %>% 
   write_tsv(file = file.path(logsPath, "test.txt"), col_names = F)
