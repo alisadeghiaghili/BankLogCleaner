@@ -84,7 +84,7 @@ logsPath <- "D:\\vazirian logs\\Blocking Logs"
       }
     } else if(dataType == "block" | dataType == "blocks") {
       if(hadBlock == 0){
-        block <- datafo
+        block <- data
         hadBlock <- 1
       } else {
         block <- bind_rows(block, data)
